@@ -81,6 +81,8 @@
     пока стрелка не совпадёт с меткой наверху — вы будете обращены к Каабе.
   </p>
 
+  <div id="debug"></div>
+
   <div id="compass">
     <div id="top-marker"></div>
     <div id="arrow"></div>
@@ -90,7 +92,6 @@
   <div id="status">Нажмите «Начать», чтобы включить компас</div>
   <div id="bearing"></div>
   <button id="startBtn">Начать</button>
-  <div id="debug"></div>
 </div>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -115,6 +116,21 @@
 
   function debug(line) {
     debugEl.textContent += line + "\n";
+  }
+
+  // Report SDK/environment status immediately on load, before any button
+  // press — so we can diagnose even if geolocation/permission flow stalls.
+  debug("Telegram.WebApp: " + !!tg);
+  if (tg) {
+    debug("TG version: " + tg.version);
+    debug("TG.DeviceOrientation: " + !!tg.DeviceOrientation);
+    if (tg.DeviceOrientation) {
+      debug("DeviceOrientation.start is fn: " + (typeof tg.DeviceOrientation.start === "function"));
+    }
+  }
+  debug("window.DeviceOrientationEvent: " + (typeof DeviceOrientationEvent !== "undefined"));
+  if (typeof DeviceOrientationEvent !== "undefined") {
+    debug("requestPermission is fn: " + (typeof DeviceOrientationEvent.requestPermission === "function"));
   }
 
   function toRad(d) { return (d * Math.PI) / 180; }
@@ -151,14 +167,15 @@
   // Telegram clients — raw browser DeviceOrientationEvent is frequently not
   // relayed through Telegram's WebView on Android/iOS, leaving the arrow frozen.
   function startTelegramOrientation() {
-    if (!tg || !tg.DeviceOrientation || typeof tg.isVersionAtLeast !== "function" ||
-        !tg.isVersionAtLeast("8.0")) {
+    if (!tg || !tg.DeviceOrientation || typeof tg.DeviceOrientation.start !== "function") {
+      debug("TG DeviceOrientation not usable, falling back to browser API");
       return false;
     }
     try {
       tg.DeviceOrientation.start({ refresh_rate: 100, need_absolute: true }, function (started) {
+        debug("TG DeviceOrientation.start callback: started=" + started);
         if (!started) {
-          setStatus("Доступ к датчикам движения отклонён.", true);
+          setStatus("Доступ к датчикам движения отклонён (Telegram).", true);
           return;
         }
         tg.onEvent("deviceOrientationChanged", function () {
@@ -171,7 +188,7 @@
       });
       return true;
     } catch (e) {
-      debug("TG SDK error: " + e.message);
+      debug("TG SDK threw: " + e.message);
       return false;
     }
   }
@@ -205,10 +222,14 @@
       // iOS 13+: permission request must run inside a user-gesture handler.
       DeviceOrientationEvent.requestPermission()
         .then(function (result) {
+          debug("requestPermission result: " + result);
           if (result === "granted") { attach(); }
           else { setStatus("Доступ к датчикам движения отклонён.", true); }
         })
-        .catch(function () { setStatus("Не удалось запросить доступ к компасу.", true); });
+        .catch(function (err) {
+          debug("requestPermission rejected: " + err.message);
+          setStatus("Не удалось запросить доступ к компасу.", true);
+        });
     } else {
       attach();
     }
