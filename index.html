@@ -65,6 +65,12 @@
     border: none; border-radius: 12px; background: #2f7a4f; color: white;
   }
   button:disabled { opacity: 0.5; }
+
+  #debug {
+    margin-top: 18px; padding: 10px; text-align: left; font-size: 11px;
+    line-height: 1.6; color: #6b7280; background: #14161b; border-radius: 8px;
+    white-space: pre-wrap; word-break: break-all;
+  }
 </style>
 </head>
 <body>
@@ -84,7 +90,10 @@
   <div id="status">Нажмите «Начать», чтобы включить компас</div>
   <div id="bearing"></div>
   <button id="startBtn">Начать</button>
+  <div id="debug"></div>
 </div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <script>
 (function () {
@@ -97,12 +106,15 @@
   var statusEl = document.getElementById("status");
   var bearingEl = document.getElementById("bearing");
   var startBtn = document.getElementById("startBtn");
+  var debugEl = document.getElementById("debug");
 
-  // Optional: if opened inside Telegram, use its WebApp API for a native feel.
-  // Not required — the page works as a plain webpage too (useful for testing).
   var tg = window.Telegram && window.Telegram.WebApp;
   if (tg) {
     try { tg.ready(); tg.expand(); } catch (e) { /* not fatal */ }
+  }
+
+  function debug(line) {
+    debugEl.textContent += line + "\n";
   }
 
   function toRad(d) { return (d * Math.PI) / 180; }
@@ -125,35 +137,67 @@
     statusEl.className = isError ? "error" : "";
   }
 
-  function onOrientation(event) {
-    var heading;
-    if (typeof event.webkitCompassHeading === "number") {
-      heading = event.webkitCompassHeading; // iOS Safari: true compass heading already
-    } else if (typeof event.alpha === "number") {
-      // Android absolute orientation: alpha counts counter-clockwise from North
-      heading = 360 - event.alpha;
-    } else {
-      return;
-    }
-
+  function pointArrowAt(heading, source) {
     haveOrientation = true;
     var pointAt = ((qibla - heading) + 360) % 360;
     arrow.style.transform = "translate(-50%, -100%) rotate(" + pointAt + "deg)";
     setStatus("Поворачивайтесь, пока стрелка не встанет наверх");
+    debugEl.textContent =
+      source + ": heading=" + heading.toFixed(1) +
+      "° qibla=" + qibla.toFixed(1) + "° arrow=" + pointAt.toFixed(1) + "°";
   }
 
-  function startOrientation() {
+  // --- Path A: Telegram's own sensor bridge (Bot API 8.0+). Preferred inside
+  // Telegram clients — raw browser DeviceOrientationEvent is frequently not
+  // relayed through Telegram's WebView on Android/iOS, leaving the arrow frozen.
+  function startTelegramOrientation() {
+    if (!tg || !tg.DeviceOrientation || typeof tg.isVersionAtLeast !== "function" ||
+        !tg.isVersionAtLeast("8.0")) {
+      return false;
+    }
+    try {
+      tg.DeviceOrientation.start({ refresh_rate: 100, need_absolute: true }, function (started) {
+        if (!started) {
+          setStatus("Доступ к датчикам движения отклонён.", true);
+          return;
+        }
+        tg.onEvent("deviceOrientationChanged", function () {
+          // Telegram reports alpha in radians; convert to a compass heading
+          // (degrees, counter-clockwise-from-north like the raw web API).
+          var alphaDeg = tg.DeviceOrientation.alpha * 180 / Math.PI;
+          var heading = (360 - alphaDeg + 360) % 360;
+          pointArrowAt(heading, "TG SDK");
+        });
+      });
+      return true;
+    } catch (e) {
+      debug("TG SDK error: " + e.message);
+      return false;
+    }
+  }
+
+  // --- Path B: raw browser DeviceOrientationEvent. Fallback for testing this
+  // page outside Telegram, or on Telegram client versions below Bot API 8.0.
+  function onBrowserOrientation(event) {
+    var heading;
+    if (typeof event.webkitCompassHeading === "number") {
+      heading = event.webkitCompassHeading; // iOS Safari: true heading already
+    } else if (typeof event.alpha === "number") {
+      heading = 360 - event.alpha; // counter-clockwise from North -> clockwise
+    } else {
+      return;
+    }
+    pointArrowAt(heading, "browser (" + (event.absolute ? "absolute" : "relative") + ")");
+  }
+
+  function startBrowserOrientation() {
     var eventName = ("ondeviceorientationabsolute" in window)
       ? "deviceorientationabsolute"
       : "deviceorientation";
+    debug("browser fallback, listening for: " + eventName);
 
     function attach() {
-      window.addEventListener(eventName, onOrientation, true);
-      setTimeout(function () {
-        if (!haveOrientation) {
-          setStatus("Датчик компаса недоступен на этом устройстве.", true);
-        }
-      }, 2500);
+      window.addEventListener(eventName, onBrowserOrientation, true);
     }
 
     if (typeof DeviceOrientationEvent !== "undefined" &&
@@ -168,6 +212,23 @@
     } else {
       attach();
     }
+  }
+
+  function startOrientation() {
+    debug("Telegram.WebApp present: " + !!tg);
+    if (tg) debug("TG version: " + tg.version + ", DeviceOrientation: " + !!tg.DeviceOrientation);
+
+    var usingTelegram = startTelegramOrientation();
+    if (!usingTelegram) {
+      startBrowserOrientation();
+    }
+
+    setTimeout(function () {
+      if (!haveOrientation) {
+        setStatus("Датчик компаса недоступен или не даёт данных.", true);
+        debug("no orientation data received after 3s");
+      }
+    }, 3000);
   }
 
   function startGeolocation() {
