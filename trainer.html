@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Тренажёр намаза</title>
+<style>
+  :root { color-scheme: dark light; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; min-height: 100%;
+    background: #0f1115; color: #f2f2f2;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  body { padding: 20px; }
+  #app { max-width: 420px; margin: 0 auto; }
+
+  h1 { font-size: 18px; font-weight: 600; margin: 0 0 4px; text-align: center; }
+  #progress {
+    text-align: center; color: #9aa0a8; font-size: 13px; margin-bottom: 16px;
+  }
+
+  #stage {
+    position: relative;
+    width: 100%; aspect-ratio: 4 / 5;
+    border-radius: 16px; overflow: hidden;
+    background: #1b1e25; border: 1px solid #2a2e37;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+  }
+  #stage img { width: 100%; height: 100%; object-fit: contain; }
+  #stage .placeholder {
+    text-align: center; color: #6b7280; font-size: 14px; padding: 0 24px;
+    line-height: 1.5;
+  }
+  #stage .placeholder .icon { font-size: 40px; display: block; margin-bottom: 10px; }
+
+  #caption {
+    font-size: 15px; line-height: 1.5; text-align: center;
+    min-height: 22px; margin-bottom: 6px;
+  }
+
+  #mic-status {
+    text-align: center; font-size: 13px; color: #9aa0a8; min-height: 18px;
+    margin-bottom: 14px;
+  }
+  #mic-status.listening { color: #5eb18a; }
+  #mic-status.confirmed { color: #ffd27a; }
+  #mic-status.error { color: #e2574c; }
+
+  .controls { display: flex; gap: 10px; }
+  button {
+    flex: 1; padding: 13px 10px; font-size: 14px; font-weight: 600;
+    border: none; border-radius: 12px; background: #2f7a4f; color: white;
+  }
+  button.secondary { background: #262a33; color: #d0d3d8; }
+  button:disabled { opacity: 0.45; }
+
+  #start-screen { text-align: center; padding-top: 30px; }
+  #start-screen p.hint {
+    color: #9aa0a8; font-size: 14px; line-height: 1.5; margin: 10px 0 26px;
+  }
+  #start-screen button { padding: 14px 30px; }
+
+  #done-screen { display: none; text-align: center; padding-top: 40px; }
+  #done-screen .icon { font-size: 46px; margin-bottom: 12px; }
+
+  #error-screen { display: none; text-align: center; padding-top: 40px; color: #e2574c; }
+
+  #debug {
+    margin-top: 18px; padding: 10px; text-align: left; font-size: 11px;
+    line-height: 1.6; color: #6b7280; background: #14161b; border-radius: 8px;
+    white-space: pre-wrap; word-break: break-all; display: none;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="error-screen">
+    <p id="error-text">Не указана молитва.</p>
+  </div>
+
+  <div id="start-screen">
+    <h1 id="start-title">🕌 Тренажёр намаза</h1>
+    <p class="hint">
+      На каждом шаге — изображение позы и голосовое объяснение. Когда
+      закончите слушать, произнесите вслух такбир («Аллаху Акбар») —
+      бот услышит и сам покажет следующий шаг. Можно и вручную, кнопкой «Далее».
+    </p>
+    <button id="startBtn">Начать</button>
+  </div>
+
+  <div id="player" style="display:none;">
+    <h1 id="prayer-title"></h1>
+    <div id="progress"></div>
+
+    <div id="stage"></div>
+    <div id="caption"></div>
+    <div id="mic-status"></div>
+
+    <div class="controls">
+      <button id="replayBtn" class="secondary">🔁 Повторить</button>
+      <button id="nextBtn">Далее ▶</button>
+    </div>
+  </div>
+
+  <div id="done-screen">
+    <div class="icon">✅</div>
+    <h1>Шаги пройдены</h1>
+    <p class="hint" style="color:#9aa0a8;">Можно закрыть тренажёр или пройти заново.</p>
+    <button id="restartBtn">Пройти ещё раз</button>
+  </div>
+
+  <div id="debug"></div>
+</div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  // --------------------------------------------------------------------
+  // CONTENT. One array per prayer, each entry is one step of the trainer,
+  // shown/played in order. Fill these in incrementally as material arrives
+  // — nothing else in this file needs to change to add a step.
+  //
+  //   image:   path to a picture of the pose, relative to this HTML file
+  //            (e.g. "assets/fajr/01_takbir.jpg"), or null for a
+  //            placeholder box (use while a step has no image yet).
+  //   audio:   path to the narration audio file, or null for a step with
+  //            no narration (advances immediately / waits for manual tap
+  //            or voice instead of "audio ended").
+  //   caption: short text shown under the image — what to say/do. Keep it
+  //            as a readable summary of the audio, not a transcript.
+  // --------------------------------------------------------------------
+  var STEPS = {
+    fajr:    [],
+    dhuhr:   [],
+    asr:     [],
+    maghrib: [],
+    isha:    []
+  };
+
+  var PRAYER_NAMES = {
+    fajr: "Фаджр", dhuhr: "Зухр", asr: "Аср", maghrib: "Магриб", isha: "Иша"
+  };
+
+  // Voice-activity detection tuning. We do NOT try to recognize the word
+  // "такбир" -- just detect that the user started speaking (a sustained
+  // burst above a volume threshold). Simpler and far more robust than
+  // speech-to-text: no accent/mic-quality dependence, no network latency.
+  // Listening only starts after narration audio finishes, so normal
+  // background noise before that point can't trigger a false advance.
+  var VAD_THRESHOLD = 28;      // RMS deviation from silence (0-128 scale)
+  var VAD_REQUIRED_FRAMES = 8; // consecutive frames above threshold (~130ms at 60fps)
+  var VAD_START_DELAY_MS = 350; // grace period after narration ends, before listening
+
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) {
+    try { tg.ready(); tg.expand(); } catch (e) { /* not fatal */ }
+  }
+
+  var debugEl = document.getElementById("debug");
+  function debug(line) { debugEl.textContent += line + "\n"; }
+
+  function getParam(name) {
+    var m = new RegExp("[?&]" + name + "=([^&]+)").exec(window.location.search);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  var prayerKey = getParam("prayer");
+  var steps = prayerKey ? STEPS[prayerKey] : null;
+
+  var startScreen = document.getElementById("start-screen");
+  var errorScreen = document.getElementById("error-screen");
+  var playerEl = document.getElementById("player");
+  var doneScreen = document.getElementById("done-screen");
+
+  if (!prayerKey || !steps) {
+    document.getElementById("error-text").textContent =
+      "Не указана молитва. Откройте тренажёр из кнопки «Обучение намазу» в боте.";
+    errorScreen.style.display = "block";
+    startScreen.style.display = "none";
+    return;
+  }
+
+  document.getElementById("start-title").textContent =
+    "🕌 Тренажёр: " + PRAYER_NAMES[prayerKey];
+  document.getElementById("prayer-title").textContent = PRAYER_NAMES[prayerKey];
+
+  // --- Mic / VAD -----------------------------------------------------
+
+  var micStream = null, audioCtx = null, analyser = null, vadData = null;
+  var listening = false, vadEnabled = true;
+  var micStatusEl = document.getElementById("mic-status");
+
+  function setMicStatus(text, cls) {
+    micStatusEl.textContent = text;
+    micStatusEl.className = cls || "";
+  }
+
+  function initMic(onReady) {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      vadEnabled = false;
+      setMicStatus("Голосовое переключение недоступно в этом браузере — используйте «Далее».", "error");
+      onReady();
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function (stream) {
+        micStream = stream;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var source = audioCtx.createMediaStreamSource(stream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        source.connect(analyser);
+        vadData = new Uint8Array(analyser.frequencyBinCount);
+        onReady();
+      })
+      .catch(function (err) {
+        vadEnabled = false;
+        debug("mic error: " + err.message);
+        setMicStatus("Доступ к микрофону не получен — используйте «Далее».", "error");
+        onReady();
+      });
+  }
+
+  var vadFrame = null;
+  function stopListening() {
+    listening = false;
+    if (vadFrame) { cancelAnimationFrame(vadFrame); vadFrame = null; }
+  }
+
+  function startListening(onDetected) {
+    if (!vadEnabled || !analyser) return;
+    listening = true;
+    setMicStatus("🎙 Слушаю — скажите такбир, чтобы продолжить", "listening");
+    var speakingFrames = 0;
+
+    function tick() {
+      if (!listening) return;
+      analyser.getByteTimeDomainData(vadData);
+      var sum = 0;
+      for (var i = 0; i < vadData.length; i++) {
+        var v = vadData[i] - 128;
+        sum += v * v;
+      }
+      var rms = Math.sqrt(sum / vadData.length);
+      speakingFrames = rms > VAD_THRESHOLD ? speakingFrames + 1 : 0;
+      if (speakingFrames >= VAD_REQUIRED_FRAMES) {
+        stopListening();
+        setMicStatus("✅ Такбир засчитан", "confirmed");
+        onDetected();
+        return;
+      }
+      vadFrame = requestAnimationFrame(tick);
+    }
+    vadFrame = requestAnimationFrame(tick);
+  }
+
+  // --- Player ----------------------------------------------------------
+
+  var idx = 0;
+  var currentAudioEl = null;
+
+  function renderStep() {
+    stopListening();
+    if (currentAudioEl) { currentAudioEl.pause(); currentAudioEl = null; }
+
+    if (idx >= steps.length) {
+      playerEl.style.display = "none";
+      doneScreen.style.display = "block";
+      return;
+    }
+
+    var step = steps[idx];
+    document.getElementById("progress").textContent =
+      "Шаг " + (idx + 1) + " из " + steps.length;
+
+    var stage = document.getElementById("stage");
+    stage.innerHTML = "";
+    if (step.image) {
+      var img = document.createElement("img");
+      img.src = step.image;
+      img.alt = "";
+      stage.appendChild(img);
+    } else {
+      var ph = document.createElement("div");
+      ph.className = "placeholder";
+      ph.innerHTML = '<span class="icon">🕌</span>Изображение для этого шага скоро добавят';
+      stage.appendChild(ph);
+    }
+
+    document.getElementById("caption").textContent = step.caption || "";
+    setMicStatus("");
+
+    if (step.audio) {
+      currentAudioEl = new Audio(step.audio);
+      currentAudioEl.addEventListener("ended", function () {
+        setTimeout(function () { startListening(advance); }, VAD_START_DELAY_MS);
+      });
+      currentAudioEl.play().catch(function (err) {
+        debug("audio play blocked: " + err.message);
+        startListening(advance);
+      });
+    } else {
+      startListening(advance);
+    }
+  }
+
+  function advance() {
+    idx += 1;
+    renderStep();
+  }
+
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    advance();
+  });
+  document.getElementById("replayBtn").addEventListener("click", function () {
+    renderStep();
+  });
+  document.getElementById("restartBtn").addEventListener("click", function () {
+    idx = 0;
+    doneScreen.style.display = "none";
+    playerEl.style.display = "block";
+    renderStep();
+  });
+
+  document.getElementById("startBtn").addEventListener("click", function () {
+    document.getElementById("startBtn").disabled = true;
+    initMic(function () {
+      startScreen.style.display = "none";
+      if (steps.length === 0) {
+        playerEl.style.display = "none";
+        doneScreen.style.display = "block";
+        doneScreen.querySelector("h1").textContent = "Материалы скоро появятся";
+        doneScreen.querySelector(".hint").textContent =
+          "Для «" + PRAYER_NAMES[prayerKey] + "» шаги ещё не добавлены.";
+        doneScreen.querySelector("#restartBtn").style.display = "none";
+        return;
+      }
+      playerEl.style.display = "block";
+      renderStep();
+    });
+  });
+})();
+</script>
+</body>
+</html>
