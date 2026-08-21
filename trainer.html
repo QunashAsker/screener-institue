@@ -129,9 +129,11 @@
   //   image:   path to a picture of the pose, relative to this HTML file
   //            (e.g. "assets/fajr/01_takbir.jpg"), or null for a
   //            placeholder box (use while a step has no image yet).
-  //   audio:   path to the narration audio file, or null for a step with
-  //            no narration (advances immediately / waits for manual tap
-  //            or voice instead of "audio ended").
+  //   audio:   path to the narration audio file, an ARRAY of paths played
+  //            back to back (e.g. [explanation, reference takbir sound]),
+  //            or null for a step with no narration (advances immediately
+  //            / waits for manual tap or voice instead of "audio ended").
+  //            Voice listening starts only after the whole queue finishes.
   //   caption: short text shown under the image — what to say/do. Keep it
   //            as a readable summary of the audio, not a transcript.
   // --------------------------------------------------------------------
@@ -139,7 +141,7 @@
     fajr: [
       {
         image: "assets/fajr/01_takbir.webp",
-        audio: "assets/fajr/01_takbir.mp3",
+        audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
         caption: "Такбир аль-ихрам: поднимите руки до уровня плеч и произнесите «Аллаху Акбар» — так начинается молитва."
       }
     ],
@@ -271,6 +273,28 @@
   var idx = 0;
   var currentAudioEl = null;
 
+  // Plays a list of audio clips back to back (e.g. spoken explanation,
+  // then a reference recording of the takbir itself), then calls onDone.
+  // `urls` is consumed as a queue; currentAudioEl always points at the
+  // clip in flight so renderStep()/replay can stop it early.
+  function playAudioQueue(urls, onDone) {
+    var i = 0;
+    function playNext() {
+      if (i >= urls.length) { onDone(); return; }
+      currentAudioEl = new Audio(urls[i]);
+      currentAudioEl.addEventListener("ended", function () {
+        i += 1;
+        playNext();
+      });
+      currentAudioEl.play().catch(function (err) {
+        debug("audio play blocked: " + err.message);
+        i += 1;
+        playNext();
+      });
+    }
+    playNext();
+  }
+
   function renderStep() {
     stopListening();
     if (currentAudioEl) { currentAudioEl.pause(); currentAudioEl = null; }
@@ -303,13 +327,9 @@
     setMicStatus("");
 
     if (step.audio) {
-      currentAudioEl = new Audio(step.audio);
-      currentAudioEl.addEventListener("ended", function () {
+      var urls = Array.isArray(step.audio) ? step.audio : [step.audio];
+      playAudioQueue(urls, function () {
         setTimeout(function () { startListening(advance); }, VAD_START_DELAY_MS);
-      });
-      currentAudioEl.play().catch(function (err) {
-        debug("audio play blocked: " + err.message);
-        startListening(advance);
       });
     } else {
       startListening(advance);
