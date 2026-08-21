@@ -160,9 +160,15 @@
         caption: "После «Аль-Фатихи» прочитайте ещё один отрывок или суру из Корана."
       },
       {
+        // Caption deliberately stays generic: the pose/image is unchanged
+        // from steps 2-3 (still qiyam), so the text must not claim a
+        // different physical action than what's pictured -- an earlier
+        // version of this caption guessed "takbir into ruku'" without
+        // actually knowing the audio content, which was wrong (audio
+        // continues qiyam recitation, mentions another surah).
         image: "assets/fajr/02_qiyam.webp",
-        audio: "assets/fajr/04_pre_ruku_takbir.mp3",
-        caption: "Скажите такбир «Аллаху Акбар» и наклонитесь в поясной поклон (руку')."
+        audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/05_qiyam_continued.mp3"],
+        caption: "Продолжайте чтение в кыяме — упоминается ещё одна сура."
       }
     ],
     dhuhr:   [],
