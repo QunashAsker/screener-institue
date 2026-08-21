@@ -188,8 +188,16 @@
       },
       {
         image: "assets/fajr/03_ruku.webp",
-        audio: "assets/fajr/06_ruku.mp3",
+        audio: ["assets/fajr/06_ruku.mp3", "assets/shared/recitation_placeholder.mp3"],
         caption: "Поясной поклон (руку'): спина прямая, ладони на коленях."
+      },
+      {
+        // I'tidal -- rising back up from ruku'. Hands are raised again
+        // here (same as the opening takbir and the takbir before ruku'),
+        // so this reuses the takbir image rather than a new photo.
+        image: "assets/fajr/01_takbir.webp",
+        audio: ["assets/fajr/07_itidal.mp3", "assets/shared/recitation_placeholder.mp3"],
+        caption: "Выпрямитесь из поясного поклона: руки снова поднимаются, как при такбире."
       }
     ],
     dhuhr:   [],
