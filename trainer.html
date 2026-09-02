@@ -369,20 +369,42 @@
   var idx = 0;
   var currentAudioEl = null;
 
+  // Bumped on every renderStep() call (Next/Back/Replay/auto-advance --
+  // every possible step transition). Each audio chain captures the token
+  // current at its own start; every async callback inside it checks the
+  // token is still current before doing anything. This is what makes a
+  // superseded chain actually stop instead of continuing in the
+  // background -- see the bug this fixes, below.
+  var playToken = 0;
+
   // Plays a list of audio clips back to back (e.g. spoken explanation,
   // then a reference recording of the takbir itself), then calls onDone.
   // `urls` is consumed as a queue; currentAudioEl always points at the
   // clip in flight so renderStep()/replay can stop it early.
-  function playAudioQueue(urls, onDone) {
+  //
+  // BUG THIS GUARDS AGAINST: renderStep() stops the previous clip with
+  // .pause(), but if that clip's .play() Promise hadn't resolved yet, the
+  // browser rejects it (AbortError) -- which used to land in the .catch()
+  // below, get misread as "autoplay blocked", and defensively advance to
+  // the QUEUE'S NEXT clip. That spawned a brand-new Audio object no
+  // longer reachable through currentAudioEl (already reassigned to the
+  // new step), so it played on uncontrolled. Rapid slide-switching could
+  // spawn one of these orphaned players per click -- several old clips
+  // audible at once. The token check below makes a rejection caused by
+  // our own pause() a silent no-op instead of "try the next clip".
+  function playAudioQueue(urls, token, onDone) {
     var i = 0;
     function playNext() {
+      if (token !== playToken) return; // superseded by a later step change
       if (i >= urls.length) { onDone(); return; }
       currentAudioEl = new Audio(urls[i]);
       currentAudioEl.addEventListener("ended", function () {
+        if (token !== playToken) return;
         i += 1;
         playNext();
       });
       currentAudioEl.play().catch(function (err) {
+        if (token !== playToken) return; // our own pause() caused this, not a real error
         debug("audio play blocked: " + err.message);
         i += 1;
         playNext();
@@ -392,6 +414,9 @@
   }
 
   function renderStep() {
+    playToken += 1;
+    var myToken = playToken;
+
     stopListening();
     if (currentAudioEl) { currentAudioEl.pause(); currentAudioEl = null; }
 
@@ -425,8 +450,11 @@
 
     if (step.audio) {
       var urls = Array.isArray(step.audio) ? step.audio : [step.audio];
-      playAudioQueue(urls, function () {
-        setTimeout(function () { startListening(advance); }, VAD_START_DELAY_MS);
+      playAudioQueue(urls, myToken, function () {
+        setTimeout(function () {
+          if (myToken !== playToken) return; // stepped away during the grace delay
+          startListening(advance);
+        }, VAD_START_DELAY_MS);
       });
     } else {
       startListening(advance);
