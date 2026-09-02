@@ -100,6 +100,7 @@
     <div id="mic-status"></div>
 
     <div class="controls">
+      <button id="backBtn" class="secondary">◀ Назад</button>
       <button id="replayBtn" class="secondary">🔁 Повторить</button>
       <button id="nextBtn">Далее ▶</button>
     </div>
@@ -403,6 +404,7 @@
     var step = steps[idx];
     document.getElementById("progress").textContent =
       "Шаг " + (idx + 1) + " из " + steps.length;
+    document.getElementById("backBtn").disabled = idx === 0;
 
     var stage = document.getElementById("stage");
     stage.innerHTML = "";
@@ -436,8 +438,17 @@
     renderStep();
   }
 
+  function goBack() {
+    if (idx === 0) return;
+    idx -= 1;
+    renderStep();
+  }
+
   document.getElementById("nextBtn").addEventListener("click", function () {
     advance();
+  });
+  document.getElementById("backBtn").addEventListener("click", function () {
+    goBack();
   });
   document.getElementById("replayBtn").addEventListener("click", function () {
     renderStep();
