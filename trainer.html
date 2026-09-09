@@ -166,8 +166,13 @@
         caption: "أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ\nА'узу би-Лляхи мин аш-шайтани р-раджим\nИщу у Аллаха защиты от проклятого шайтана"
       },
       {
+        // Second clip: real recitation (user: "в шаге третьем вместо
+        // заглушки поставь это аудио" — Al-Fatiha, Muhammad al-Luhaidan),
+        // replacing the shared placeholder for THIS step only. Other steps
+        // still pointing at assets/shared/recitation_placeholder.mp3 are
+        // untouched.
         image: "assets/fajr/02_qiyam.webp",
-        audio: ["assets/fajr/03_recitation_intro.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/03_recitation_intro.mp3", "assets/fajr/03_alfatiha_recitation.mp3"],
         caption: "Читает суру «Аль-Фатиха»"
       },
       {
@@ -179,8 +184,10 @@
         // continues qiyam recitation, mentions another surah).
         // Split into two slides (was one step with a 2-clip audio queue) --
         // one slide per clip, each with its own voice-triggered advance.
+        // Second clip: "Амин" audio appended after the explanation
+        // (user: "в шаге 4 после аудиообъяснения добавь амин.mp3").
         image: "assets/fajr/02_qiyam.webp",
-        audio: "assets/fajr/04_qiyam_continued.mp3",
+        audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
         caption: "Продолжайте чтение в кыяме."
       },
       {
