@@ -35,6 +35,11 @@
   }
   #stage .placeholder .icon { font-size: 40px; display: block; margin-bottom: 10px; }
 
+  #step-title {
+    font-size: 17px; font-weight: 700; text-align: center;
+    margin-bottom: 10px; display: none;
+  }
+
   #caption {
     font-size: 15px; line-height: 1.5; text-align: center;
     min-height: 22px; margin-bottom: 6px;
@@ -96,6 +101,7 @@
     <h1 id="prayer-title"></h1>
     <div id="progress"></div>
 
+    <div id="step-title"></div>
     <div id="stage"></div>
     <div id="caption"></div>
     <div id="mic-status"></div>
@@ -138,6 +144,9 @@
   //            Voice listening starts only after the whole queue finishes.
   //   caption: short text shown under the image — what to say/do. Keep it
   //            as a readable summary of the audio, not a transcript.
+  //   title:   optional section header shown above the image (e.g. a new
+  //            phase of the prayer like "Завершение молитвы"). Omit for
+  //            steps that continue the current section.
   // --------------------------------------------------------------------
   var STEPS = {
     fajr: [
@@ -345,6 +354,29 @@
         image: "assets/fajr/16_sitting3.webp",
         audio: "assets/fajr/16_sitting3.mp3",
         caption: ""
+      },
+      {
+        // Placeholder (user: "шаг 32 ... заглушка") -- new section header,
+        // image/audio supplied directly, caption left empty until content
+        // is confirmed.
+        title: "Завершение молитвы",
+        image: "assets/fajr/17_finish1.webp",
+        audio: "assets/fajr/17_finish1.mp3",
+        caption: ""
+      },
+      {
+        // Placeholder (user: "шаг 33") -- new image/audio supplied
+        // directly, caption left empty until content is confirmed.
+        image: "assets/fajr/18_finish2.webp",
+        audio: "assets/fajr/18_finish2.mp3",
+        caption: ""
+      },
+      {
+        // Placeholder (user: "шаг 34") -- new image/audio supplied
+        // directly, caption left empty until content is confirmed.
+        image: "assets/fajr/19_finish3.webp",
+        audio: "assets/fajr/19_finish3.mp3",
+        caption: ""
       }
     ],
     dhuhr:   [],
@@ -536,6 +568,14 @@
     document.getElementById("progress").textContent =
       "Шаг " + (idx + 1) + " из " + steps.length;
     document.getElementById("backBtn").disabled = idx === 0;
+
+    var titleEl = document.getElementById("step-title");
+    if (step.title) {
+      titleEl.textContent = step.title;
+      titleEl.style.display = "block";
+    } else {
+      titleEl.style.display = "none";
+    }
 
     var stage = document.getElementById("stage");
     stage.innerHTML = "";
