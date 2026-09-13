@@ -46,6 +46,12 @@
     white-space: pre-line;
   }
 
+  #choices {
+    display: none; gap: 10px; margin-bottom: 14px;
+  }
+  #choices button { flex: 1; }
+  #choices button.selected { background: #3f9c66; }
+
   #mic-status {
     text-align: center; font-size: 13px; color: #9aa0a8; min-height: 18px;
     margin-bottom: 14px;
@@ -104,6 +110,7 @@
     <div id="step-title"></div>
     <div id="stage"></div>
     <div id="caption"></div>
+    <div id="choices"></div>
     <div id="mic-status"></div>
 
     <div class="controls">
@@ -147,6 +154,12 @@
   //   title:   optional section header shown above the image (e.g. a new
   //            phase of the prayer like "Завершение молитвы"). Omit for
   //            steps that continue the current section.
+  //   choices: optional array of {label, audio} -- renders one button per
+  //            entry after step.audio finishes (or immediately if there's
+  //            no step.audio); tapping a button plays that entry's audio,
+  //            then proceeds to voice listening as usual. Use when a step
+  //            offers a real choice of what to recite (e.g. which surah
+  //            after Al-Fatiha) instead of a single fixed clip.
   // --------------------------------------------------------------------
   var STEPS = {
     fajr: [
@@ -191,9 +204,17 @@
         caption: "Продолжайте чтение в кыяме."
       },
       {
+        // Choice of which surah to recite after Al-Fatiha (user: "надо в
+        // шаге 5 сделать две кнопки ... Аль-Ихлас ... Ан-Нас"), both real
+        // recitations by Muhammad al-Luhaidan (Arabic + Russian subtitles).
+        // The explanation clip plays first, then the two buttons appear.
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
-        caption: "Чтение продолжается — упоминается ещё одна сура."
+        caption: "Чтение продолжается — упоминается ещё одна сура.",
+        choices: [
+          { label: "Аль-Ихлас", audio: "assets/fajr/05_alikhlas_recitation.mp3" },
+          { label: "Ан-Нас", audio: "assets/fajr/05_annas_recitation.mp3" }
+        ]
       },
       {
         // Same image+audio as step 1 (user: "шаг 5 будет точно такой же
@@ -537,25 +558,71 @@
   // spawn one of these orphaned players per click -- several old clips
   // audible at once. The token check below makes a rejection caused by
   // our own pause() a silent no-op instead of "try the next clip".
-  function playAudioQueue(urls, token, onDone) {
+  // `isStale` is a function, not a fixed token: the step-level queue checks
+  // against the outer `playToken` alone, but a choice-button tap (see
+  // renderChoices) also needs to invalidate a PREVIOUS tap on the same
+  // step, so it layers in its own sub-token too. Passing a predicate keeps
+  // both call sites correct without duplicating this function.
+  function playAudioQueue(urls, isStale, onDone) {
     var i = 0;
     function playNext() {
-      if (token !== playToken) return; // superseded by a later step change
+      if (isStale()) return; // superseded by a later step change (or choice re-tap)
       if (i >= urls.length) { onDone(); return; }
       currentAudioEl = new Audio(urls[i]);
       currentAudioEl.addEventListener("ended", function () {
-        if (token !== playToken) return;
+        if (isStale()) return;
         i += 1;
         playNext();
       });
       currentAudioEl.play().catch(function (err) {
-        if (token !== playToken) return; // our own pause() caused this, not a real error
+        if (isStale()) return; // our own pause() caused this, not a real error
         debug("audio play blocked: " + err.message);
         i += 1;
         playNext();
       });
     }
     playNext();
+  }
+
+  // Choice token: bumped every time a choice button is tapped, so a rapid
+  // second tap invalidates the first tap's in-flight audio (same pattern
+  // as playToken, scoped one level down).
+  var choiceToken = 0;
+
+  function renderChoices(step, myToken) {
+    var box = document.getElementById("choices");
+    box.innerHTML = "";
+    if (!step.choices || !step.choices.length) {
+      box.style.display = "none";
+      return;
+    }
+    box.style.display = "flex";
+    step.choices.forEach(function (choice) {
+      var btn = document.createElement("button");
+      btn.className = "secondary";
+      btn.textContent = choice.label;
+      btn.addEventListener("click", function () {
+        stopListening();
+        if (currentAudioEl) { currentAudioEl.pause(); }
+        choiceToken += 1;
+        var myChoiceToken = choiceToken;
+
+        var buttons = box.querySelectorAll("button");
+        for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
+        btn.classList.add("selected");
+
+        setMicStatus("");
+        playAudioQueue([choice.audio], function () {
+          return myToken !== playToken || myChoiceToken !== choiceToken;
+        }, function () {
+          setTimeout(function () {
+            if (myToken !== playToken || myChoiceToken !== choiceToken) return;
+            startListening(advance);
+          }, VAD_START_DELAY_MS);
+        });
+      });
+      box.appendChild(btn);
+    });
   }
 
   function renderStep() {
@@ -600,15 +667,27 @@
 
     document.getElementById("caption").textContent = step.caption || "";
     setMicStatus("");
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("choices").style.display = "none";
+
+    function isStepStale() { return myToken !== playToken; }
 
     if (step.audio) {
       var urls = Array.isArray(step.audio) ? step.audio : [step.audio];
-      playAudioQueue(urls, myToken, function () {
+      playAudioQueue(urls, isStepStale, function () {
+        if (step.choices) {
+          renderChoices(step, myToken);
+          setMicStatus("Выберите, что читать дальше");
+          return;
+        }
         setTimeout(function () {
-          if (myToken !== playToken) return; // stepped away during the grace delay
+          if (isStepStale()) return; // stepped away during the grace delay
           startListening(advance);
         }, VAD_START_DELAY_MS);
       });
+    } else if (step.choices) {
+      renderChoices(step, myToken);
+      setMicStatus("Выберите, что читать дальше");
     } else {
       startListening(advance);
     }
