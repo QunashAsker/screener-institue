@@ -310,18 +310,24 @@
         caption: "Кыям: сложите руки на груди и читайте суру «Аль-Фатиха»."
       },
       {
-        // Same as step 4 (user: "шаг 18 будет такой же как шаг 4") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 4 (user: "шаг 18 будет такой же как шаг 4", later:
+        // "все аудио в шаге 18 такое же как в шаге 4") -- image, audio and
+        // caption all match step 4, including the Amin clip added there.
         image: "assets/fajr/02_qiyam.webp",
-        audio: "assets/fajr/04_qiyam_continued.mp3",
+        audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
         caption: "Продолжайте чтение в кыяме."
       },
       {
-        // Same as step 5 (user: "шаг 19 такой же как шаг 5") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 5 (user: "шаг 19 такой же как шаг 5", later: "все
+        // аудио в шаге 19 такое же как в шаге 5") -- image, audio and
+        // caption all match step 5, including its Al-Ikhlas/An-Nas choice.
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
-        caption: "Чтение продолжается — упоминается ещё одна сура."
+        caption: "Чтение продолжается — упоминается ещё одна сура.",
+        choices: [
+          { label: "Аль-Ихлас", audio: "assets/fajr/05_alikhlas_recitation.mp3" },
+          { label: "Ан-Нас", audio: "assets/fajr/05_annas_recitation.mp3" }
+        ]
       },
       {
         // Same as step 6 (user: "шаг 20 такой же как шаг 6") --
@@ -331,24 +337,25 @@
         caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы."
       },
       {
-        // Same as step 7 (user: "шаг 21 равен шаг 7") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 7 (user: "шаг 21 равен шаг 7"), real tasbeeh audio
+        // added later (user: "шаг 21 вместо заглушки...").
         image: "assets/fajr/03_ruku.webp",
-        audio: ["assets/fajr/06_ruku.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/06_ruku.mp3", "assets/fajr/21_ruku_tasbeeh.mp3"],
         caption: "Поясной поклон (руку'): спина прямая, ладони на коленях."
       },
       {
-        // Same as step 8 (user: "шаг 22 равен шагу 8") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 8 (user: "шаг 22 равен шагу 8"), real audio added
+        // later (user: "шаг 22 вместо заглушки..." -- a second, distinct
+        // recording from the one used on step 8).
         image: "assets/fajr/01_takbir.webp",
-        audio: ["assets/fajr/07_itidal.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/07_itidal.mp3", "assets/fajr/22_itidal_samiallahu.mp3"],
         caption: "Выпрямитесь из поясного поклона: руки снова поднимаются, как при такбире."
       },
       {
-        // Same as step 9 (user: "шаг 23 такой же как шаг 9") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 9 (user: "шаг 23 такой же как шаг 9"), real dua
+        // audio added later (user: "шаг 23 вместо заглушки...").
         image: "assets/fajr/04_qawmah.webp",
-        audio: ["assets/fajr/08_qawmah.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/08_qawmah.mp3", "assets/fajr/23_qawmah_dua.mp3"],
         caption: "Кома: короткое выпрямление стоя, руки опущены вдоль тела."
       },
       {
@@ -359,10 +366,10 @@
         caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола."
       },
       {
-        // Same as step 11 (user: "шаг 25 равен шагу 11") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 11 (user: "шаг 25 равен шагу 11"), real tasbeeh
+        // audio added later (user: "шаг 25 вместо заглушки...").
         image: "assets/fajr/05_sujud.webp",
-        audio: ["assets/fajr/10_sujud_continued.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/10_sujud_continued.mp3", "assets/fajr/25_sujud_tasbeeh.mp3"],
         caption: "Продолжение земного поклона (суджуд)."
       },
       {
@@ -373,10 +380,10 @@
         caption: "Сидение между двумя земными поклонами."
       },
       {
-        // Same as step 13 (user: "шаг 27 равен шаг 13") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 13 (user: "шаг 27 равен шаг 13"), real "Рабби
+        // гфир-ли" audio added later (user: "шаг 27 вместо заглушки...").
         image: "assets/fajr/06_sitting.webp",
-        audio: ["assets/fajr/12_sitting_continued.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/12_sitting_continued.mp3", "assets/fajr/27_sitting_rabbigfirli.mp3"],
         caption: "Продолжение сидения между поклонами."
       },
       {
@@ -387,10 +394,12 @@
         caption: "Второй земной поклон (суджуд) этого рак'ата."
       },
       {
-        // Same as step 15 (user: "шаг 29 такой же как шаг 15") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 15 (user: "шаг 29 такой же как шаг 15"), same
+        // sujud-tasbeeh audio added later (user: "шаг 29 вместо
+        // заглушки..." -- matches the same content placed on step 15
+        // per the user's earlier explicit confirmation there).
         image: "assets/fajr/05_sujud.webp",
-        audio: ["assets/fajr/14_pre_second_rakah.mp3", "assets/shared/recitation_placeholder.mp3"],
+        audio: ["assets/fajr/14_pre_second_rakah.mp3", "assets/fajr/29_pre_second_rakah_tasbeeh.mp3"],
         caption: "Такбир перед подъёмом во второй рак'ат."
       },
       {
