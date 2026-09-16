@@ -168,10 +168,9 @@
       {
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        // Dhikr text block appended per user-supplied reference image (user:
-        // "нам нужно к каждому шагу добавить текст молитв, транскрипция...
-        // шаг 1"). Physical instruction kept above it.
-        caption: "Такбир аль-ихрам: поднимите руки до уровня плеч и произнесите «Аллаху Акбар» — так начинается молитва.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов...").
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // TODO: assets/shared/recitation_placeholder.mp3 is a temporary
@@ -206,11 +205,12 @@
         // one slide per clip, each with its own voice-triggered advance.
         // Second clip: "Амин" audio appended after the explanation
         // (user: "в шаге 4 после аудиообъяснения добавь амин.mp3").
-        // Dhikr text block appended per user-supplied reference image
-        // (user: "...шаг 4"). Step 18 (duplicate) is untouched.
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов..."). Step 18
+        // (duplicate) is untouched.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
-        caption: "Продолжайте чтение в кыяме.\n\nآمِينْ\nАмин!\nО Аллах, ответь на наши мольбы!"
+        caption: "آمِينْ\nАмин!\nО Аллах, ответь на наши мольбы!"
       },
       {
         // Choice of which surah to recite after Al-Fatiha (user: "надо в
@@ -220,9 +220,12 @@
         // Full surah text per choice (Arabic + transliteration + translation,
         // ayah by ayah) added per user-supplied reference images (user:
         // "шаг 5").
+        // Old self-authored base description removed (user: "удали все
+        // старые текстовые описания шагов..."); the per-choice surah text
+        // below is untouched.
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
-        caption: "Чтение продолжается — упоминается ещё одна сура.",
+        caption: "",
         choices: [
           {
             label: "Аль-Ихлас",
@@ -241,22 +244,23 @@
         // как и шаг 1") -- raising the hands at takbir happens again here,
         // before bowing into ruku', not only at the prayer's opening.
         // Only the caption differs, to match this later moment.
-        // Dhikr text block appended per user-supplied reference image (user:
-        // "...шаг 6"). Step 20 (duplicate) is untouched.
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов..."). Step 20
+        // (duplicate) is untouched.
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real tasbeeh audio for THIS step only (user: "в
         // шаге 7 вместо заглушки поставь..."), replacing the shared
         // placeholder. Step 21 (duplicate of this step) still points at
         // assets/shared/recitation_placeholder.mp3, untouched.
-        // Dhikr text block appended per user-supplied reference image
-        // (user: "шаг 7").
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов...").
         image: "assets/fajr/03_ruku.webp",
         audio: ["assets/fajr/06_ruku.mp3", "assets/fajr/07_ruku_tasbeeh.mp3"],
-        caption: "Поясной поклон (руку'): спина прямая, ладони на коленях.\n\nسُبْحَانَ رَبِّيَ العَظِيمِ\nСубхана Раббийа ль-'Азым\nПречист Господь мой Великий"
+        caption: "سُبْحَانَ رَبِّيَ العَظِيمِ\nСубхана Раббийа ль-'Азым\nПречист Господь мой Великий"
       },
       {
         // I'tidal -- rising back up from ruku'. Hands are raised again
@@ -267,57 +271,68 @@
         // the shared placeholder. Step 22 (duplicate) is untouched.
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/07_itidal.mp3", "assets/fajr/08_itidal_samiallahu.mp3"],
-        caption: "Выпрямитесь из поясного поклона: руки снова поднимаются, как при такбире."
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied for this
+        // step yet, so the caption is empty until one is.
+        caption: ""
       },
       {
         // Second clip: real qawmah dua audio for THIS step only (user: "в
         // шаге 9 вместо зашлушки поставь..."), replacing the shared
         // placeholder. Step 23 (duplicate) is untouched.
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/04_qawmah.webp",
         audio: ["assets/fajr/08_qawmah.mp3", "assets/fajr/09_qawmah_dua.mp3"],
-        caption: "Кома: короткое выпрямление стоя, руки опущены вдоль тела."
+        caption: ""
       },
       {
-        // Dhikr text block appended per user-supplied reference image (user:
-        // "...шаг 10"). Step 24 (duplicate) is untouched. Entering sujud is
-        // marked by the same takbir as steps 1/6, not a sujud-specific dhikr
-        // (that comes once IN sujud -- see step 11's tasbeeh audio).
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов..."). Step 24
+        // (duplicate) is untouched. Entering sujud is marked by the same
+        // takbir as steps 1/6, not a sujud-specific dhikr (that comes once
+        // IN sujud -- see step 11's tasbeeh audio).
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/09_sujud.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real sujud tasbeeh audio for THIS step only (user:
         // "в шаге 11 вместо заглушки поставь..." -- corrected: this is
         // actually step 11, not step 10, which I'd wrongly edited first),
         // replacing the shared placeholder. Step 24 (duplicate) is untouched.
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/10_sujud_continued.mp3", "assets/fajr/11_sujud_tasbeeh.mp3"],
-        caption: "Продолжение земного поклона (суджуд)."
+        caption: ""
       },
       {
-        // Dhikr text block appended per user-supplied reference image (user:
-        // "...шаг 12"). Steps 26 and 30 (duplicates) are untouched. Rising
-        // from the first sujud into this sitting is marked by the same
-        // takbir as steps 1/6/10.
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов..."). Steps 26 and 30
+        // (duplicates) are untouched. Rising from the first sujud into this
+        // sitting is marked by the same takbir as steps 1/6/10.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/11_sitting.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Сидение между двумя земными поклонами.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real "Рабби гфир-ли" audio for THIS step only (user:
         // "в шаге 13 вместо заглушки поставь..."), replacing the shared
         // placeholder. Step 27 (duplicate) is untouched.
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/12_sitting_continued.mp3", "assets/fajr/13_sitting_rabbigfirli.mp3"],
-        caption: "Продолжение сидения между поклонами."
+        caption: ""
       },
       {
-        // Dhikr text block appended per user-supplied reference image (user:
-        // "...шаг 14"). Step 28 (duplicate) is untouched.
+        // Old self-authored description removed, dhikr text kept (user:
+        // "удали все старые текстовые описания шагов..."). Step 28
+        // (duplicate) is untouched.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/13_sujud2.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Второй земной поклон (суджуд) этого рак'ата.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: sujud tasbeeh audio placed here per explicit user
@@ -325,9 +340,11 @@
         // confirmed after I flagged a caption mismatch — the caption below
         // is about the takbir into standing, not sujud). Step 29
         // (duplicate) is untouched.
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/14_pre_second_rakah.mp3", "assets/fajr/15_pre_second_rakah_tasbeeh.mp3"],
-        caption: "Такбир перед подъёмом во второй рак'ат."
+        caption: ""
       },
       {
         // Dhikr text block set per user-supplied reference image (user:
@@ -340,29 +357,35 @@
         caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
-        // Same as step 2 (user: "шаг 17 точно такой же как и шаг 2") --
-        // image and caption reused verbatim. Audio later overridden (user:
-        // "все аудио в шаге 17 такое же как в шаге 3") -- same two clips
-        // (intro + real Al-Fatiha recitation) as step 3, not step 2.
+        // Same as step 2 (user: "шаг 17 точно такой же как и шаг 2").
+        // Audio later overridden (user: "все аудио в шаге 17 такое же как
+        // в шаге 3") -- same two clips (intro + real Al-Fatiha recitation)
+        // as step 3, not step 2. Old self-authored description removed
+        // (user: "удали все старые текстовые описания шагов..."); no
+        // dhikr text supplied for this step yet.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/03_recitation_intro.mp3", "assets/fajr/03_alfatiha_recitation.mp3"],
-        caption: "Кыям: сложите руки на груди и читайте суру «Аль-Фатиха»."
+        caption: ""
       },
       {
         // Same as step 4 (user: "шаг 18 будет такой же как шаг 4", later:
         // "все аудио в шаге 18 такое же как в шаге 4") -- image, audio and
         // caption all match step 4, including the Amin clip added there.
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
-        caption: "Продолжайте чтение в кыяме."
+        caption: ""
       },
       {
         // Same as step 5 (user: "шаг 19 такой же как шаг 5", later: "все
         // аудио в шаге 19 такое же как в шаге 5") -- image, audio and
         // caption all match step 5, including its Al-Ikhlas/An-Nas choice.
+        // Old self-authored base description removed (user: "удали все
+        // старые текстовые описания шагов...").
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
-        caption: "Чтение продолжается — упоминается ещё одна сура.",
+        caption: "",
         choices: [
           { label: "Аль-Ихлас", audio: "assets/fajr/05_alikhlas_recitation.mp3" },
           { label: "Ан-Нас", audio: "assets/fajr/05_annas_recitation.mp3" }
@@ -370,84 +393,105 @@
       },
       {
         // Same as step 6 (user: "шаг 20 такой же как шаг 6"). Dhikr text
-        // block appended later (user: "...шаг 20").
+        // block appended later (user: "...шаг 20"), old self-authored
+        // description removed after (user: "удали все старые текстовые
+        // описания шагов...").
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 7 (user: "шаг 21 равен шаг 7"), real tasbeeh audio
         // added later (user: "шаг 21 вместо заглушки...").
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/03_ruku.webp",
         audio: ["assets/fajr/06_ruku.mp3", "assets/fajr/21_ruku_tasbeeh.mp3"],
-        caption: "Поясной поклон (руку'): спина прямая, ладони на коленях."
+        caption: ""
       },
       {
         // Same as step 8 (user: "шаг 22 равен шагу 8"), real audio added
         // later (user: "шаг 22 вместо заглушки..." -- a second, distinct
-        // recording from the one used on step 8).
+        // recording from the one used on step 8). Old self-authored
+        // description removed (user: "удали все старые текстовые описания
+        // шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/07_itidal.mp3", "assets/fajr/22_itidal_samiallahu.mp3"],
-        caption: "Выпрямитесь из поясного поклона: руки снова поднимаются, как при такбире."
+        caption: ""
       },
       {
         // Same as step 9 (user: "шаг 23 такой же как шаг 9"), real dua
-        // audio added later (user: "шаг 23 вместо заглушки...").
+        // audio added later (user: "шаг 23 вместо заглушки..."). Old
+        // self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/04_qawmah.webp",
         audio: ["assets/fajr/08_qawmah.mp3", "assets/fajr/23_qawmah_dua.mp3"],
-        caption: "Кома: короткое выпрямление стоя, руки опущены вдоль тела."
+        caption: ""
       },
       {
         // Same as step 10 (user: "шаг 24 равен шаг 10"). Dhikr text block
-        // appended later (user: "...шаг 24").
+        // appended later (user: "...шаг 24"), old self-authored description
+        // removed after (user: "удали все старые текстовые описания
+        // шагов...").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/09_sujud.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 11 (user: "шаг 25 равен шагу 11"), real tasbeeh
-        // audio added later (user: "шаг 25 вместо заглушки...").
+        // audio added later (user: "шаг 25 вместо заглушки..."). Old
+        // self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/10_sujud_continued.mp3", "assets/fajr/25_sujud_tasbeeh.mp3"],
-        caption: "Продолжение земного поклона (суджуд)."
+        caption: ""
       },
       {
         // Same as step 12 (user: "шаг 26 такой же как шаг 12"). Dhikr text
-        // block appended later (user: "...шаг 26"). Step 30 (also a
-        // duplicate of step 12) is untouched.
+        // block appended later (user: "...шаг 26"), old self-authored
+        // description removed after (user: "удали все старые текстовые
+        // описания шагов..."). Step 30 (also a duplicate of step 12) is
+        // untouched.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/11_sitting.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Сидение между двумя земными поклонами.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 13 (user: "шаг 27 равен шаг 13"), real "Рабби
         // гфир-ли" audio added later (user: "шаг 27 вместо заглушки...").
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/12_sitting_continued.mp3", "assets/fajr/27_sitting_rabbigfirli.mp3"],
-        caption: "Продолжение сидения между поклонами."
+        caption: ""
       },
       {
         // Same as step 14 (user: "шаг 28 равен шагу 14"). Dhikr text block
-        // appended later (user: "...шаг 28").
+        // appended later (user: "...шаг 28"), old self-authored description
+        // removed after (user: "удали все старые текстовые описания
+        // шагов...").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/13_sujud2.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Второй земной поклон (суджуд) этого рак'ата.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 15 (user: "шаг 29 такой же как шаг 15"), same
         // sujud-tasbeeh audio added later (user: "шаг 29 вместо
         // заглушки..." -- matches the same content placed on step 15
         // per the user's earlier explicit confirmation there).
+        // Old self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/14_pre_second_rakah.mp3", "assets/fajr/29_pre_second_rakah_tasbeeh.mp3"],
-        caption: "Такбир перед подъёмом во второй рак'ат."
+        caption: ""
       },
       {
-        // Same as step 12 (user: "шаг 30 равен шагу 12") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 12 (user: "шаг 30 равен шагу 12"). Old
+        // self-authored description removed (user: "удали все старые
+        // текстовые описания шагов..."); no dhikr text supplied yet.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/11_sitting.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Сидение между двумя земными поклонами."
+        caption: ""
       },
       {
         // Placeholder (user: "шаг 31 ... заглушка") -- new image/audio
