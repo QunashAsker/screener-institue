@@ -154,11 +154,13 @@
   //   title:   optional section header shown above the image (e.g. a new
   //            phase of the prayer like "Завершение молитвы"). Omit for
   //            steps that continue the current section.
-  //   choices: optional array of {label, audio} -- renders one button per
-  //            entry after step.audio finishes (or immediately if there's
-  //            no step.audio); tapping a button plays that entry's audio,
-  //            then proceeds to voice listening as usual. Use when a step
-  //            offers a real choice of what to recite (e.g. which surah
+  //   choices: optional array of {label, audio, caption} -- renders one
+  //            button per entry after step.audio finishes (or immediately
+  //            if there's no step.audio); tapping a button plays that
+  //            entry's audio and, if given, swaps the caption to show that
+  //            entry's own text, then proceeds to voice listening as
+  //            usual. Use when a step offers a real choice of what to
+  //            recite (e.g. which surah
   //            after Al-Fatiha) instead of a single fixed clip.
   // --------------------------------------------------------------------
   var STEPS = {
@@ -189,7 +191,9 @@
         // untouched.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/03_recitation_intro.mp3", "assets/fajr/03_alfatiha_recitation.mp3"],
-        caption: "Читает суру «Аль-Фатиха»"
+        // Full text of Al-Fatiha (Arabic + transliteration + translation,
+        // ayah by ayah) per user-supplied reference image (user: "шаг 3").
+        caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nАль-хамду ли-Лляхи рабби ль-'алямин\nХвала Аллаху, Господу миров,\n\nالرَّحْمَٰنِ الرَّحِيمِ\nАр-Рахмани р-Рахим\nМилостивому, Милосердному,\n\nمَالِكِ يَوْمِ الدِّينِ\nМалики йауми д-дин\nВластелину Дня воздаяния!\n\nإِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nИййака на'буду ва иййака наста'ин\nТебе одному мы поклоняемся и Тебя одного молим о помощи.\n\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ\nИхди-на с-сырата ль-мустакым\nВеди нас прямым путём,\n\nصِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ\nСырат аллязина ан'амта 'алей-хим гайри ль-магдуби 'алей-хим ва ля д-даллин\nпутём тех, кого Ты облагодетельствовал, не тех, на кого пал гнев, и не заблудших."
       },
       {
         // Caption deliberately stays generic: the pose/image is unchanged
@@ -202,21 +206,34 @@
         // one slide per clip, each with its own voice-triggered advance.
         // Second clip: "Амин" audio appended after the explanation
         // (user: "в шаге 4 после аудиообъяснения добавь амин.mp3").
+        // Dhikr text block appended per user-supplied reference image
+        // (user: "...шаг 4"). Step 18 (duplicate) is untouched.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
-        caption: "Продолжайте чтение в кыяме."
+        caption: "Продолжайте чтение в кыяме.\n\nآمِينْ\nАмин!\nО Аллах, ответь на наши мольбы!"
       },
       {
         // Choice of which surah to recite after Al-Fatiha (user: "надо в
         // шаге 5 сделать две кнопки ... Аль-Ихлас ... Ан-Нас"), both real
         // recitations by Muhammad al-Luhaidan (Arabic + Russian subtitles).
         // The explanation clip plays first, then the two buttons appear.
+        // Full surah text per choice (Arabic + transliteration + translation,
+        // ayah by ayah) added per user-supplied reference images (user:
+        // "шаг 5").
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
         caption: "Чтение продолжается — упоминается ещё одна сура.",
         choices: [
-          { label: "Аль-Ихлас", audio: "assets/fajr/05_alikhlas_recitation.mp3" },
-          { label: "Ан-Нас", audio: "assets/fajr/05_annas_recitation.mp3" }
+          {
+            label: "Аль-Ихлас",
+            audio: "assets/fajr/05_alikhlas_recitation.mp3",
+            caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nقُلْ هُوَ اللَّهُ أَحَدٌ\nКуль хува Ллаху ахад\nСкажи: «Он - Аллах Единый,\n\nاللَّهُ الصَّمَدُ\nАллаху с-самад\nАллах Самодостаточный.\n\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nлям йалид ва лям йуляд\nОн не родил и не был рожден,\n\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\nва лям йакуль ля-ху куфуван ахад\nи нет никого равного Ему»."
+          },
+          {
+            label: "Ан-Нас",
+            audio: "assets/fajr/05_annas_recitation.mp3",
+            caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nКуль а'узу би рабби н-нас\nСкажи: «Прибегаю к защите Господа людей,\n\nمَلِكِ النَّاسِ\nМалики н-нас\nЦаря людей,\n\nإِلَٰهِ النَّاسِ\nИляхи н-нас\nБога людей,\n\nمِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nмин шарри ль-васваси ль-ханнас\nот зла искусителя отступающего при поминании Аллаха,\n\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nаллязи йувасвису фи судурин н-нас\nкоторый наущает в груди людей\n\nمِنَ الْجِنَّةِ وَالنَّاسِ\nмин аль-джиннати ва-н-нас\nи бывает из джиннов и людей»."
+          }
         ]
       },
       {
@@ -235,9 +252,11 @@
         // шаге 7 вместо заглушки поставь..."), replacing the shared
         // placeholder. Step 21 (duplicate of this step) still points at
         // assets/shared/recitation_placeholder.mp3, untouched.
+        // Dhikr text block appended per user-supplied reference image
+        // (user: "шаг 7").
         image: "assets/fajr/03_ruku.webp",
         audio: ["assets/fajr/06_ruku.mp3", "assets/fajr/07_ruku_tasbeeh.mp3"],
-        caption: "Поясной поклон (руку'): спина прямая, ладони на коленях."
+        caption: "Поясной поклон (руку'): спина прямая, ладони на коленях.\n\nسُبْحَانَ رَبِّيَ العَظِيمِ\nСубхана Раббийа ль-'Азым\nПречист Господь мой Великий"
       },
       {
         // I'tidal -- rising back up from ruku'. Hands are raised again
@@ -670,6 +689,10 @@
         var buttons = box.querySelectorAll("button");
         for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove("selected");
         btn.classList.add("selected");
+
+        if (choice.caption) {
+          document.getElementById("caption").textContent = choice.caption;
+        }
 
         setMicStatus("");
         playAudioQueue([choice.audio], function () {
