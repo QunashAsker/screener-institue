@@ -166,7 +166,10 @@
       {
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        caption: "Такбир аль-ихрам: поднимите руки до уровня плеч и произнесите «Аллаху Акбар» — так начинается молитва."
+        // Dhikr text block appended per user-supplied reference image (user:
+        // "нам нужно к каждому шагу добавить текст молитв, транскрипция...
+        // шаг 1"). Physical instruction kept above it.
+        caption: "Такбир аль-ихрам: поднимите руки до уровня плеч и произнесите «Аллаху Акбар» — так начинается молитва.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // TODO: assets/shared/recitation_placeholder.mp3 is a temporary
@@ -221,9 +224,11 @@
         // как и шаг 1") -- raising the hands at takbir happens again here,
         // before bowing into ruku', not only at the prayer's opening.
         // Only the caption differs, to match this later moment.
+        // Dhikr text block appended per user-supplied reference image (user:
+        // "...шаг 6"). Step 20 (duplicate) is untouched.
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы."
+        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real tasbeeh audio for THIS step only (user: "в
@@ -254,9 +259,13 @@
         caption: "Кома: короткое выпрямление стоя, руки опущены вдоль тела."
       },
       {
+        // Dhikr text block appended per user-supplied reference image (user:
+        // "...шаг 10"). Step 24 (duplicate) is untouched. Entering sujud is
+        // marked by the same takbir as steps 1/6, not a sujud-specific dhikr
+        // (that comes once IN sujud -- see step 11's tasbeeh audio).
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/09_sujud.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола."
+        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real sujud tasbeeh audio for THIS step only (user:
@@ -268,9 +277,13 @@
         caption: "Продолжение земного поклона (суджуд)."
       },
       {
+        // Dhikr text block appended per user-supplied reference image (user:
+        // "...шаг 12"). Steps 26 and 30 (duplicates) are untouched. Rising
+        // from the first sujud into this sitting is marked by the same
+        // takbir as steps 1/6/10.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/11_sitting.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Сидение между двумя земными поклонами."
+        caption: "Сидение между двумя земными поклонами.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: real "Рабби гфир-ли" audio for THIS step only (user:
@@ -281,9 +294,11 @@
         caption: "Продолжение сидения между поклонами."
       },
       {
+        // Dhikr text block appended per user-supplied reference image (user:
+        // "...шаг 14"). Step 28 (duplicate) is untouched.
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/13_sujud2.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Второй земной поклон (суджуд) этого рак'ата."
+        caption: "Второй земной поклон (суджуд) этого рак'ата.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Second clip: sujud tasbeeh audio placed here per explicit user
@@ -296,9 +311,14 @@
         caption: "Такбир перед подъёмом во второй рак'ат."
       },
       {
+        // Dhikr text block set per user-supplied reference image (user:
+        // "...шаг 16"). Caption was previously empty (user: "убери
+        // описание в шаге 16") -- this is the takbir standing up into the
+        // second rak'ah, so the dhikr text replaces the blank caption
+        // rather than being appended to anything.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/15_qiyam2.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: ""
+        caption: "اللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 2 (user: "шаг 17 точно такой же как и шаг 2") --
@@ -330,11 +350,11 @@
         ]
       },
       {
-        // Same as step 6 (user: "шаг 20 такой же как шаг 6") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 6 (user: "шаг 20 такой же как шаг 6"). Dhikr text
+        // block appended later (user: "...шаг 20").
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/01_takbir.mp3", "assets/fajr/01_takbir_sound.mp3"],
-        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы."
+        caption: "Такбир перед поясным поклоном (руку'): руки снова поднимаются до уровня плеч, как в начале молитвы.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 7 (user: "шаг 21 равен шаг 7"), real tasbeeh audio
@@ -359,11 +379,11 @@
         caption: "Кома: короткое выпрямление стоя, руки опущены вдоль тела."
       },
       {
-        // Same as step 10 (user: "шаг 24 равен шаг 10") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 10 (user: "шаг 24 равен шаг 10"). Dhikr text block
+        // appended later (user: "...шаг 24").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/09_sujud.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола."
+        caption: "Земной поклон (суджуд): лоб, нос, ладони, колени и пальцы ног касаются пола.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 11 (user: "шаг 25 равен шагу 11"), real tasbeeh
@@ -373,11 +393,12 @@
         caption: "Продолжение земного поклона (суджуд)."
       },
       {
-        // Same as step 12 (user: "шаг 26 такой же как шаг 12") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 12 (user: "шаг 26 такой же как шаг 12"). Dhikr text
+        // block appended later (user: "...шаг 26"). Step 30 (also a
+        // duplicate of step 12) is untouched.
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/11_sitting.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Сидение между двумя земными поклонами."
+        caption: "Сидение между двумя земными поклонами.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 13 (user: "шаг 27 равен шаг 13"), real "Рабби
@@ -387,11 +408,11 @@
         caption: "Продолжение сидения между поклонами."
       },
       {
-        // Same as step 14 (user: "шаг 28 равен шагу 14") --
-        // identical image, audio and caption, reused verbatim.
+        // Same as step 14 (user: "шаг 28 равен шагу 14"). Dhikr text block
+        // appended later (user: "...шаг 28").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/13_sujud2.mp3", "assets/shared/recitation_placeholder.mp3"],
-        caption: "Второй земной поклон (суджуд) этого рак'ата."
+        caption: "Второй земной поклон (суджуд) этого рак'ата.\n\nاللَّهُ أَكْبَرُ\nАллаху Акбар\nАллах Велик"
       },
       {
         // Same as step 15 (user: "шаг 29 такой же как шаг 15"), same
