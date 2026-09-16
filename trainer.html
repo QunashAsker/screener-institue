@@ -355,35 +355,40 @@
         // Same as step 2 (user: "шаг 17 точно такой же как и шаг 2").
         // Audio later overridden (user: "все аудио в шаге 17 такое же как
         // в шаге 3") -- same two clips (intro + real Al-Fatiha recitation)
-        // as step 3, not step 2. Old self-authored description removed
-        // (user: "удали все старые текстовые описания шагов..."); no
-        // dhikr text supplied for this step yet.
+        // as step 3, not step 2. Caption set to match step 3 (user: "шаг
+        // 17 = 3") -- full text of Al-Fatiha.
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/03_recitation_intro.mp3", "assets/fajr/03_alfatiha_recitation.mp3"],
-        caption: ""
+        caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nالْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ\nАль-хамду ли-Лляхи рабби ль-'алямин\nХвала Аллаху, Господу миров,\n\nالرَّحْمَٰنِ الرَّحِيمِ\nАр-Рахмани р-Рахим\nМилостивому, Милосердному,\n\nمَالِكِ يَوْمِ الدِّينِ\nМалики йауми д-дин\nВластелину Дня воздаяния!\n\nإِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ\nИййака на'буду ва иййака наста'ин\nТебе одному мы поклоняемся и Тебя одного молим о помощи.\n\nاهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ\nИхди-на с-сырата ль-мустакым\nВеди нас прямым путём,\n\nصِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ\nСырат аллязина ан'амта 'алей-хим гайри ль-магдуби 'алей-хим ва ля д-даллин\nпутём тех, кого Ты облагодетельствовал, не тех, на кого пал гнев, и не заблудших."
       },
       {
         // Same as step 4 (user: "шаг 18 будет такой же как шаг 4", later:
         // "все аудио в шаге 18 такое же как в шаге 4") -- image, audio and
         // caption all match step 4, including the Amin clip added there.
-        // Old self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // Caption set to match step 4 (user: "шаг 18 = 4").
         image: "assets/fajr/02_qiyam.webp",
         audio: ["assets/fajr/04_qiyam_continued.mp3", "assets/fajr/04_amin.mp3"],
-        caption: ""
+        caption: "آمِينْ\nАмин!\nО Аллах, ответь на наши мольбы!"
       },
       {
         // Same as step 5 (user: "шаг 19 такой же как шаг 5", later: "все
         // аудио в шаге 19 такое же как в шаге 5") -- image, audio and
         // caption all match step 5, including its Al-Ikhlas/An-Nas choice.
-        // Old self-authored base description removed (user: "удали все
-        // старые текстовые описания шагов...").
+        // Choice captions set to match step 5 (user: "шаг 19 = 5").
         image: "assets/fajr/02_qiyam.webp",
         audio: "assets/fajr/05_qiyam_continued.mp3",
         caption: "",
         choices: [
-          { label: "Аль-Ихлас", audio: "assets/fajr/05_alikhlas_recitation.mp3" },
-          { label: "Ан-Нас", audio: "assets/fajr/05_annas_recitation.mp3" }
+          {
+            label: "Аль-Ихлас",
+            audio: "assets/fajr/05_alikhlas_recitation.mp3",
+            caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nقُلْ هُوَ اللَّهُ أَحَدٌ\nКуль хува Ллаху ахад\nСкажи: «Он - Аллах Единый,\n\nاللَّهُ الصَّمَدُ\nАллаху с-самад\nАллах Самодостаточный.\n\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nлям йалид ва лям йуляд\nОн не родил и не был рожден,\n\nوَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ\nва лям йакуль ля-ху куфуван ахад\nи нет никого равного Ему»."
+          },
+          {
+            label: "Ан-Нас",
+            audio: "assets/fajr/05_annas_recitation.mp3",
+            caption: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\nБи-сми Лляхи р-Рахмани р-Рахим\nС именем Аллаха, Милостивого, Милосердного!\n\nقُلْ أَعُوذُ بِرَبِّ النَّاسِ\nКуль а'узу би рабби н-нас\nСкажи: «Прибегаю к защите Господа людей,\n\nمَلِكِ النَّاسِ\nМалики н-нас\nЦаря людей,\n\nإِلَٰهِ النَّاسِ\nИляхи н-нас\nБога людей,\n\nمِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ\nмин шарри ль-васваси ль-ханнас\nот зла искусителя отступающего при поминании Аллаха,\n\nالَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ\nаллязи йувасвису фи судурин н-нас\nкоторый наущает в груди людей\n\nمِنَ الْجِنَّةِ وَالنَّاسِ\nмин аль-джиннати ва-н-нас\nи бывает из джиннов и людей»."
+          }
         ]
       },
       {
@@ -397,31 +402,28 @@
       },
       {
         // Same as step 7 (user: "шаг 21 равен шаг 7"), real tasbeeh audio
-        // added later (user: "шаг 21 вместо заглушки...").
-        // Old self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // added later (user: "шаг 21 вместо заглушки..."). Caption set to
+        // match step 7 (user: "шаг 21 = 7").
         image: "assets/fajr/03_ruku.webp",
         audio: ["assets/fajr/06_ruku.mp3", "assets/fajr/21_ruku_tasbeeh.mp3"],
-        caption: ""
+        caption: "سُبْحَانَ رَبِّيَ العَظِيمِ\nСубхана Раббийа ль-'Азым\nПречист Господь мой Великий"
       },
       {
         // Same as step 8 (user: "шаг 22 равен шагу 8"), real audio added
         // later (user: "шаг 22 вместо заглушки..." -- a second, distinct
-        // recording from the one used on step 8). Old self-authored
-        // description removed (user: "удали все старые текстовые описания
-        // шагов..."); no dhikr text supplied yet.
+        // recording from the one used on step 8). Caption set to match
+        // step 8 (user: "шаг 22 = 8").
         image: "assets/fajr/01_takbir.webp",
         audio: ["assets/fajr/07_itidal.mp3", "assets/fajr/22_itidal_samiallahu.mp3"],
-        caption: ""
+        caption: "سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ\nСами'а Ллаху ли-ман хамидах\nСлышит Аллах того, кто восхваляет Его"
       },
       {
         // Same as step 9 (user: "шаг 23 такой же как шаг 9"), real dua
-        // audio added later (user: "шаг 23 вместо заглушки..."). Old
-        // self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // audio added later (user: "шаг 23 вместо заглушки..."). Caption
+        // set to match step 9 (user: "шаг 23 = 9").
         image: "assets/fajr/04_qawmah.webp",
         audio: ["assets/fajr/08_qawmah.mp3", "assets/fajr/23_qawmah_dua.mp3"],
-        caption: ""
+        caption: "رَبَّنَا وَ لَكَ الْحَمْدُ\nРабба-на ва ля-ка ль-хамд\nГосподь наш, Тебе хвала!"
       },
       {
         // Same as step 10 (user: "шаг 24 равен шаг 10"). Dhikr text block
@@ -434,12 +436,11 @@
       },
       {
         // Same as step 11 (user: "шаг 25 равен шагу 11"), real tasbeeh
-        // audio added later (user: "шаг 25 вместо заглушки..."). Old
-        // self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // audio added later (user: "шаг 25 вместо заглушки..."). Caption
+        // set to match step 11 (user: "шаг 25 = 11").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/10_sujud_continued.mp3", "assets/fajr/25_sujud_tasbeeh.mp3"],
-        caption: ""
+        caption: "سُبْحَانَ رَبِّيَ الأَعْلَي\nСубхана Раббийа ль-А'ля\nПречист Господь мой Высочайший"
       },
       {
         // Same as step 12 (user: "шаг 26 такой же как шаг 12"). Dhikr text
@@ -454,11 +455,10 @@
       {
         // Same as step 13 (user: "шаг 27 равен шаг 13"), real "Рабби
         // гфир-ли" audio added later (user: "шаг 27 вместо заглушки...").
-        // Old self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // Caption set to match step 13 (user: "шаг 27 = 13").
         image: "assets/fajr/06_sitting.webp",
         audio: ["assets/fajr/12_sitting_continued.mp3", "assets/fajr/27_sitting_rabbigfirli.mp3"],
-        caption: ""
+        caption: "رَبِّ اغْفِرْ لِي\nРабби гфир-ли\nГосподь мой, прости меня"
       },
       {
         // Same as step 14 (user: "шаг 28 равен шагу 14"). Dhikr text block
@@ -473,12 +473,11 @@
         // Same as step 15 (user: "шаг 29 такой же как шаг 15"), same
         // sujud-tasbeeh audio added later (user: "шаг 29 вместо
         // заглушки..." -- matches the same content placed on step 15
-        // per the user's earlier explicit confirmation there).
-        // Old self-authored description removed (user: "удали все старые
-        // текстовые описания шагов..."); no dhikr text supplied yet.
+        // per the user's earlier explicit confirmation there). Caption set
+        // to match step 15 (user: "шаг 29 = 15").
         image: "assets/fajr/05_sujud.webp",
         audio: ["assets/fajr/14_pre_second_rakah.mp3", "assets/fajr/29_pre_second_rakah_tasbeeh.mp3"],
-        caption: ""
+        caption: "سُبْحَانَ رَبِّيَ الأَعْلَي\nСубхана Раббийа ль-А'ля\nПречист Господь мой Высочайший"
       },
       {
         // Same as step 12 (user: "шаг 30 равен шагу 12"). Old
